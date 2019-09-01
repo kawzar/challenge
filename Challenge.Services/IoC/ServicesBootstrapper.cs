@@ -9,7 +9,7 @@ namespace Challenge.Services.IoC
     {
         public static IServiceCollection RegisterServices(this IServiceCollection services)
         {
-            services.AddSingleton<ChallengeContext, ChallengeContext>();
+            services.AddScoped<ChallengeContext, ChallengeContext>();
             services.AddScoped<IPostsService, PostsService>();
             services.AddScoped<IUsersService, UsersService>();
             return services;
