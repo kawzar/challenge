@@ -1,1 +1,5 @@
-<p>post-list works!</p>
+<div *ngFor="let post of posts">
+    <div>{{post.Title}}</div>
+    <div>{{post.Content}}</div>
+    <p> {{post.Author.Username}} </p>
+</div>

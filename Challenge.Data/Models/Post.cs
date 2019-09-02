@@ -11,6 +11,8 @@ namespace Challenge.Data.Models
         public string Title { get; set; }
         public string Content { get; set; }
         public User Author { get; set; }
+
+        [ForeignKey("Author")]
         public int AuthorId { get; set; }
     }
 }

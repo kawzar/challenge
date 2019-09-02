@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Challenge.Web.Controllers
 {
-    [Route("api/[controller]")]
     public class PostsController : Controller
     {
         private readonly IPostsService service;
@@ -15,7 +14,7 @@ namespace Challenge.Web.Controllers
         }
 
         [HttpGet]
-        public JsonResult Posts()
+        public JsonResult AllPosts()
         {
             return Json(service.GetAllPosts());
         }
@@ -27,7 +26,7 @@ namespace Challenge.Web.Controllers
         }
 
         [HttpPost]
-        public void SavePost(Post post)
+        public void SavePost([FromBody]Post post)
         {
             service.AddPost(post);
         }

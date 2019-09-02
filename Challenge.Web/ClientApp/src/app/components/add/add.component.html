@@ -1,0 +1,9 @@
+<form id="add">
+    <div>
+        <div>Title</div>
+        <input type="text" [(ngModel)]="post.Title" name="title"/>
+        <div>Content</div>
+        <input type="text" [(ngModel)]="post.Content" name="content"/>
+    </div>
+    <a href="#" (click)="savePost($event)">Save</a>
+</form>

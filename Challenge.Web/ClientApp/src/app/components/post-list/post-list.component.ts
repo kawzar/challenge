@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Post } from 'src/app/interfaces/post';
+import { PostsService } from 'src/app/services/posts.service';
 
 @Component({
   selector: 'app-post-list',
@@ -7,9 +9,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PostListComponent implements OnInit {
 
-  constructor() { }
+  constructor(private postsService: PostsService) { }
+
+  posts: Post[] = [];
 
   ngOnInit() {
+    console.log("hola");
+    this.postsService.getAll().subscribe(result => this.posts = result);
   }
 
 }

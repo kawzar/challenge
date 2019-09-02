@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Challenge.Data.Context;
 using Challenge.Data.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Challenge.Services.Posts
 {
@@ -15,16 +17,17 @@ namespace Challenge.Services.Posts
 
         public IEnumerable<Post> GetAllPosts()
         {
-            return context.Posts;
+            return context.Posts.Include(x => x.Author);
         }
 
         public Post GetPostById(int id)
         {
-            return context.Posts.Find(id);
+            return context.Posts.Include(x => x.Author).SingleOrDefault(x => x.Id == id);
         }
 
         public void AddPost(Post post)
         {
+            context.Entry(post.Author).State = EntityState.Unchanged;
             context.Posts.Add(post);
             context.SaveChanges();
         }

@@ -11,7 +11,7 @@ namespace Challenge.Data.Models
         public int Id { get; set; }
         public string Username { get; set; }
 
-        [ForeignKey("AuthorId")]
+        [NotMapped]
         public ICollection<Post> UserPosts { get; set; }
     }
 }
