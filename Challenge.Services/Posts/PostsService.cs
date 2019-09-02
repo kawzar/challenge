@@ -17,5 +17,22 @@ namespace Challenge.Services.Posts
         {
             return context.Posts;
         }
+
+        public Post GetPostById(int id)
+        {
+            return context.Posts.Find(id);
+        }
+
+        public void AddPost(Post post)
+        {
+            context.Posts.Add(post);
+            context.SaveChanges();
+        }
+
+        public void DeletePost(int id)
+        {
+            context.Posts.Remove(context.Posts.Find(id));
+            context.SaveChanges();
+        }
     }
 }
