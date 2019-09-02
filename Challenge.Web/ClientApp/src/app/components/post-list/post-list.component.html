@@ -1,4 +1,5 @@
-<div *ngFor="let post of posts">
-    <div>{{post.Title}}</div>
-    <div>{{post.Content}}</div>
-</div>
+<ul>
+    <li *ngFor="let p of posts">
+        {{p.title}} - {{p.content}}
+    </li>
+</ul>

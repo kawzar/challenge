@@ -1,8 +1,8 @@
 import { User } from './user';
 
 export interface Post {
-    Id: number,
-    Title: string;
-    Content: string;
-    Author: User
+    id: number,
+    title: string;
+    content: string;
+    author: User
 }
