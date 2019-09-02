@@ -1,41 +1,36 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using Challenge.Data.Context;
 using Challenge.Data.Models;
-using Microsoft.EntityFrameworkCore;
+using Challenge.Data.Repositories;
 
 namespace Challenge.Services.Posts
 {
     public class PostsService : IPostsService
     {
-        private readonly ChallengeContext context;
+        private readonly IPostsRepository repository;
 
-        public PostsService(ChallengeContext context)
+        public PostsService(IPostsRepository repository)
         {
-            this.context = context;
+            this.repository = repository;
         }
 
         public IEnumerable<Post> GetAllPosts()
         {
-            return context.Posts.Include(x => x.Author);
+            return repository.GetAllPosts();
         }
 
         public Post GetPostById(int id)
         {
-            return context.Posts.Include(x => x.Author).SingleOrDefault(x => x.Id == id);
+            return repository.GetPostById(id);
         }
 
         public void AddPost(Post post)
         {
-            context.Entry(post.Author).State = EntityState.Unchanged;
-            context.Posts.Add(post);
-            context.SaveChanges();
+            repository.AddPost(post);
         }
 
         public void DeletePost(int id)
         {
-            context.Posts.Remove(context.Posts.Find(id));
-            context.SaveChanges();
+            repository.DeletePost(id);
         }
     }
 }

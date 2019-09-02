@@ -9,7 +9,7 @@ import { PostsService } from 'src/app/services/posts.service';
 })
 export class AddComponent implements OnInit {
 
-  post: Post = {Id: 0, Title: "", Content: "", Author: {id: 1, username: ""}};
+  post: Post = {Id: 0, Title: "", Content: "", Author:{Id: 1, Username:""}};
   constructor(private postsService:PostsService) { }
 
   ngOnInit() {

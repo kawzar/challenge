@@ -1,21 +1,21 @@
 ﻿using System.Collections.Generic;
-using Challenge.Data.Context;
 using Challenge.Data.Models;
+using Challenge.Data.Repositories;
 
 namespace Challenge.Services.Users
 {
     public class UsersService : IUsersService
     {
-        private readonly ChallengeContext context;
+        private readonly IUsersRepository repository;
 
-        public UsersService(ChallengeContext context)
+        public UsersService(IUsersRepository repository)
         {
-            this.context = context;
+            this.repository = repository;
         }
 
         public IEnumerable<User> GetAllUsers()
         {
-            return context.Users;
+            return repository.GetAllUsers();
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using Challenge.Data.Context;
+﻿using Challenge.Data.IoC;
 using Challenge.Services.Posts;
 using Challenge.Services.Users;
 using Microsoft.Extensions.DependencyInjection;
@@ -9,7 +9,7 @@ namespace Challenge.Services.IoC
     {
         public static IServiceCollection RegisterServices(this IServiceCollection services)
         {
-            services.AddScoped<ChallengeContext, ChallengeContext>();
+            DataBootstrapper.RegisterRepositories(services);
             services.AddScoped<IPostsService, PostsService>();
             services.AddScoped<IUsersService, UsersService>();
             return services;
