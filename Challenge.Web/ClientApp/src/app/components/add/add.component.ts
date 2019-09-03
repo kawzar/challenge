@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 })
 export class AddComponent implements OnInit {
 
-  post: Post = {id: 0, title: "", content: "", author:{id: 1, username:""}};
+  post: Post = {id: 0, title: "", content: "", author:{id: 1, username:"", password:""}};
   constructor(private postsService:PostsService, private router: Router) { }
 
   ngOnInit() {

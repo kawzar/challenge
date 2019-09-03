@@ -8,13 +8,18 @@ import { PostListComponent } from './components/post-list/post-list.component';
 import { AddComponent } from './components/add/add.component';
 import { FormsModule }   from '@angular/forms';
 import { SearchFilterPipe } from './pipes/searchfilter.pipe';
+import { LoginComponent } from './components/login/login.component';
+import { AlertComponent } from './components/alert/alert.component';
+import { AlertService } from './services/alert.service';
 
 @NgModule({
   declarations: [
     AppComponent,
     PostListComponent,
     AddComponent,
-    SearchFilterPipe
+    SearchFilterPipe,
+    LoginComponent,
+    AlertComponent
   ],
   imports: [
     BrowserModule,
@@ -22,7 +27,7 @@ import { SearchFilterPipe } from './pipes/searchfilter.pipe';
     AppRoutingModule,
     FormsModule
   ],
-  providers: [],
+  providers: [AlertService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

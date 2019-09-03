@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Post } from '../interfaces/post';
 
@@ -17,6 +17,20 @@ export class PostsService {
   }
 
   public savePost(post: Post){
-    return this.http.post<Post>(`${this.baseUrl}SavePost`, post);
+    let httpOptions = {
+      headers: new HttpHeaders({ 'Authorization': localStorage.getItem('jwtToken') })
+    };
+    
+    return this.http.post<Post>(`${this.baseUrl}/`, post, httpOptions);
+  }
+
+  public deletePost(id: number){
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Authorization': localStorage.getItem('jwtToken')
+      })
+    };
+
+    return this.http.delete('/api/users/' + id, httpOptions)
   }
 }
