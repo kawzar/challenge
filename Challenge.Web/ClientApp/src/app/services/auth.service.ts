@@ -10,10 +10,10 @@ export class AuthService {
   constructor(private http: HttpClient) { }
 
   login(username: string, password: string) {
-    return this.http.post<{ token: string }>('/api/users/authenticate/', { username: username, password: password })
+    return this.http.post<any>('/api/users/authenticate/', { username: username, password: password })
       .pipe(
         map(result => {
-          localStorage.setItem('jwtToken', result.token);
+          localStorage.setItem('loggedUser', result.id.toString());
           return true;
         })
       );
@@ -24,10 +24,14 @@ export class AuthService {
   }
 
   logout() {
-    localStorage.removeItem('jwtToken');
+    localStorage.removeItem('loggedUser');
   }
 
   public get loggedIn(): boolean {
-    return (localStorage.getItem('jwtToken') !== null);
+    return (localStorage.getItem('loggedUser') !== null);
+  }
+
+  public get loggedUserId(): number {
+    return +localStorage.getItem('loggedUser');
   }
 }

@@ -17,7 +17,7 @@ export class PostsService {
   }
 
   public savePost(post: Post){
-    return this.http.post<Post>(`${this.baseUrl}`, post);
+    return this.http.post<Post>(`${this.baseUrl}SavePost`, post);
   }
 
   public deletePost(id: number){
