@@ -7,12 +7,14 @@ import { AppComponent } from './app.component';
 import { PostListComponent } from './components/post-list/post-list.component';
 import { AddComponent } from './components/add/add.component';
 import { FormsModule }   from '@angular/forms';
+import { SearchFilterPipe } from './pipes/searchfilter.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
     PostListComponent,
-    AddComponent
+    AddComponent,
+    SearchFilterPipe
   ],
   imports: [
     BrowserModule,

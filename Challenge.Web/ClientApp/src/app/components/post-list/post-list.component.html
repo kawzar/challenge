@@ -1,5 +1,18 @@
-<ul>
-    <li *ngFor="let p of posts">
-        {{p.title}} - {{p.content}}
-    </li>
-</ul>
+<div class="list-group mb-3">
+    <div class="btn-group">
+      <button class="btn btn-primary" [routerLink]="['/add']">Add post</button>
+      <button class="btn btn-outline-primary" [routerLink]="['/logout']">Log out</button>
+    </div>
+</div>
+<input type="text" class="form-control mb-3" style="max-width: 65rem;" [(ngModel)]="searchText" placeholder="Search by title..." />
+<p></p>
+<div *ngFor="let post of posts | searchFilter: 'title' : searchText">
+    <div class="list-group mb-3" style="max-width: 65rem;">
+     <h3>{{post.title}}</h3>
+     <div>{{post.content}}</div>
+     <!-- <div class="btn-group">
+        <button type="button" class="btn btn-danger" (click)="delete($event, song._id)">Borrar</button>
+     </div> -->
+    </div>
+    <hr class="my-4">
+  </div>

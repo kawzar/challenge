@@ -12,6 +12,7 @@ export class PostListComponent implements OnInit {
   constructor(private postsService: PostsService) { }
 
   posts: Post[] = [];
+  searchText : string;
 
   ngOnInit() {
     this.postsService.getAll().subscribe(result => this.posts = result);
