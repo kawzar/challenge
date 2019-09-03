@@ -17,20 +17,10 @@ export class PostsService {
   }
 
   public savePost(post: Post){
-    let httpOptions = {
-      headers: new HttpHeaders({ 'Authorization': localStorage.getItem('jwtToken') })
-    };
-    
-    return this.http.post<Post>(`${this.baseUrl}/`, post, httpOptions);
+    return this.http.post<Post>(`${this.baseUrl}`, post);
   }
 
   public deletePost(id: number){
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Authorization': localStorage.getItem('jwtToken')
-      })
-    };
-
-    return this.http.delete('/api/users/' + id, httpOptions)
+    return this.http.delete(this.baseUrl + "DeletePost/" + id)
   }
 }

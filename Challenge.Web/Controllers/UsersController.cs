@@ -5,6 +5,7 @@ using System.Text;
 using Challenge.Services.DTOs;
 using Challenge.Services.Users;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -47,6 +48,8 @@ namespace Challenge.Web.Controllers
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
             var tokenString = tokenHandler.WriteToken(token);
+            HttpContext.Session.SetString("JWToken", tokenString);
+
 
             // return basic user info (without password) and token to store client side
             return Ok(new

@@ -1,9 +1,11 @@
 ﻿using Challenge.Data.Models;
 using Challenge.Services.Posts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Challenge.Web.Controllers
 {
+    [Authorize]
     public class PostsController : Controller
     {
         private readonly IPostsService service;
@@ -13,12 +15,13 @@ namespace Challenge.Web.Controllers
             this.service = service;
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public JsonResult AllPosts()
         {
             return Json(service.GetAllPosts());
         }
-
+        [AllowAnonymous]
         [HttpGet]
         public JsonResult Post(int id)
         {

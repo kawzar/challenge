@@ -11,6 +11,7 @@ import { SearchFilterPipe } from './pipes/searchfilter.pipe';
 import { LoginComponent } from './components/login/login.component';
 import { AlertComponent } from './components/alert/alert.component';
 import { AlertService } from './services/alert.service';
+import { RegisterComponent } from './components/register/register.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { AlertService } from './services/alert.service';
     AddComponent,
     SearchFilterPipe,
     LoginComponent,
-    AlertComponent
+    AlertComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,

@@ -1,18 +1,17 @@
+using System;
 using System.Text;
-using System.Threading.Tasks;
 using Challenge.Data.Context;
 using Challenge.Services.IoC;
-using Challenge.Services.Users;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-using AutoMapper;
 
 namespace Challenge.Web
 {
@@ -29,6 +28,12 @@ namespace Challenge.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.RegisterServices();
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(60);
+            });
+
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.AddDbContext<ChallengeContext>
@@ -41,37 +46,33 @@ namespace Challenge.Web
                 configuration.RootPath = "ClientApp/dist";
             });
 
+
             var key = Encoding.ASCII.GetBytes(Configuration.GetValue<string>("JWTSecret"));
-            services.AddAuthentication(x =>
+            services.AddAuthentication(auth =>
             {
-                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                auth.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                auth.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             })
-            .AddJwtBearer(x =>
+            .AddJwtBearer(token =>
             {
-                x.Events = new JwtBearerEvents
-                {
-                    OnTokenValidated = context =>
-                    {
-                        var userService = context.HttpContext.RequestServices.GetRequiredService<IUsersService>();
-                        var userId = int.Parse(context.Principal.Identity.Name);
-                        var user = userService.GetById(userId);
-                        if (user == null)
-                        {
-                            // return unauthorized if user no longer exists
-                            context.Fail("Unauthorized");
-                        }
-                        return Task.CompletedTask;
-                    }
-                };
-                x.RequireHttpsMetadata = false;
-                x.SaveToken = true;
-                x.TokenValidationParameters = new TokenValidationParameters
+                token.RequireHttpsMetadata = false;
+                token.SaveToken = true;
+                token.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuerSigningKey = true,
+                    //Same Secret key will be used while creating the token
                     IssuerSigningKey = new SymmetricSecurityKey(key),
                     ValidateIssuer = false,
-                    ValidateAudience = false
+                    //Usually, this is your application base URL
+                    ValidIssuer = "https://localhost:44353/",
+                    ValidateAudience = false,
+                    //Here, we are creating and using JWT within the same application.
+                    //In this case, base URL is fine.
+                    //If the JWT is created using a web service, then this would be the consumer URL.
+                    ValidAudience = "https://localhost:44353/",
+                    RequireExpirationTime = true,
+                    ValidateLifetime = true,
+                    ClockSkew = TimeSpan.Zero
                 };
             });
         }
@@ -92,11 +93,22 @@ namespace Challenge.Web
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
+            app.UseSession();
 
             app.UseCors(x => x
               .AllowAnyOrigin()
               .AllowAnyMethod()
               .AllowAnyHeader());
+
+            app.Use(async (context, next) =>
+            {
+                var JWToken = context.Session.GetString("JWToken");
+                if (!string.IsNullOrEmpty(JWToken))
+                {
+                    context.Request.Headers.Add("Authorization", "Bearer " + JWToken);
+                }
+                await next();
+            });
 
             app.UseAuthentication();
 
@@ -104,7 +116,7 @@ namespace Challenge.Web
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "api/{controller}/{action=Index}/{id?}");
+                    template: "api/{controller}/{action}/{id?}");
             });
 
             app.UseSpa(spa =>
