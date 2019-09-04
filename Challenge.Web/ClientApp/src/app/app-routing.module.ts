@@ -7,6 +7,11 @@ import { RegisterComponent } from './components/register/register.component';
 
 
 const routes: Routes = [
+  {
+    path: '',
+    redirectTo: 'post-list',
+    pathMatch: 'full'
+  },
   { path: 'post-list', component: PostListComponent },
   { path: 'add', component: AddComponent },
   { path: 'login', component: LoginComponent },
